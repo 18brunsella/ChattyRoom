@@ -1,43 +1,81 @@
 import os
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, redirect, url_for
+from flask_socketio import SocketIO, send
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import SQLAlchemyError
+from datetime import datetime
 
-def create_app(test_config=None):
-  # create and configure the app
-  app = Flask(__name__, instance_relative_config=True)
-  app.config.from_mapping(
-    SECRET_KEY='dev',
-    DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-  )
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-  if test_config is None:
-    # load the instance config, if it exists, when not testing
-    app.config.from_pyfile('config.py', silent=True)
+# Create flask app 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!123'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'chattyroom.db')
+socketio = SocketIO(app)
+db = SQLAlchemy(app)
+
+# Create user table
+class User(db.Model):
+  __tablename__ = 'user'
+  id = db.Column(db.Integer, primary_key=True)
+  user_name = db.Column(db.String(200), unique=True, nullable=False)
+
+# Create messages table 
+class Messages(db.Model):
+  __tablename__ = 'messages'
+  id = db.Column(db.Integer, primary_key=True)
+  message_line = db.Column(db.String(250), nullable=False)
+  user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+  created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+# Chatty Room Home Page 
+@app.route('/')
+def home():
+  return render_template("home.html")
+
+# Chatty Room Main Chat Room Page 
+@app.route('/chatRoom', methods=["GET", "POST"])
+def room():
+  # If the request is a POST method
+  if request.method == "POST":
+    username = request.form.get("username")
+    # Get all the users with the same name (it is not allowed)
+    # user_exists = User.query.filter_by(user_name=username).first()
+
+    # If user_exists is None 
+    # if user_exists:
+      # Redirects to the home page with error = 1 (name already taken)
+      # return redirect(url_for('home', error=1))
+    
+    # Creating new user row
+    #new_user = User(user_name=username)
+    User.query.delete() #filter_by(id=1).deleteall()
+    users = User.query.all()
+    
+    for user in users:
+      print(user.user_name)
+    if not users:
+      print("wait its empty")
+
+    # Push to Database with our new user
+    #try:
+      #db.session.add(new_user)
+      #db.session.commit()
+    return render_template('chatroom.html', name=username)
+    # Any error is printed for now 
+    #except SQLAlchemyError as e:
+      #print(e)
   else:
-    # load the test config if passed in
-    app.config.from_mapping(test_config)
+    return render_template('chatroom.html')
 
-  # ensure the instance folder exists
-  try:
-    os.makedirs(app.instance_path)
-  except OSError:
-    pass
+# Handling messages received by the server (sent from client)
+@socketio.on("message")
+def handle_message(message):
+  print("Received Message: " + str(message))
+  if message != "User connected!":
+    socketio.emit("response", message)
 
-  # Chatty Room Home Page 
-  @app.route('/')
-  def home():
-    return render_template("index.html")
-
-  @app.route('/chatRoom')
-  def room():
-    name = request.args.get('username')
-
-    if not name in database:
-      return render_template('chatroom.html')
-    else:
-      return redirect(url_for('home'))
-
-  from . import db 
-  db.init_app(app)
-
-  return app
+if __name__ == '__main__':
+  socketio.run(app, host="127.0.0.1")
 

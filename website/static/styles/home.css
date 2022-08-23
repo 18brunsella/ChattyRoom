@@ -1,0 +1,64 @@
+
+body {
+  background-color: #282828;
+  background-image: url("../images/speechBubbles.png");
+  background-position: 0 -50px;
+}
+
+.center {
+  position: fixed;
+  right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
+
+  min-height: 270px;
+  width: 12.5%;
+
+  padding: 50px 60px;
+  text-align: center;
+  background-color: #f6f6f6;
+  border-radius: 10px;
+
+  top: 25%;
+}
+
+#titleText {
+  font-family: 'Francois One';
+  font-size: 2em;
+}
+
+::placeholder {
+  font-family: 'Francois One';
+  opacity: 1; 
+  font-size: 1.2em;
+}
+
+:-ms-input-placeholder, ::-ms-input-placeholder {
+  font-family: 'Francois One';
+  font-size: 1.2em;
+}
+
+button {
+  font-family: 'Francois One';
+  color: white;
+  background-color: #414141;
+  border-radius: 15px;
+  padding: 12.5px 35px;
+  font-size: 1.15em;
+  border: none;
+}
+
+input[type="text"] {
+  padding: 15px 20px;
+  border-radius: 40px;
+  border: solid black 2px;
+  margin: 40px 0;
+  width: 75%;
+  font-family: 'Francois One';
+}
+
+#error {
+  color: red;
+  font-family: 'Francois One';
+}

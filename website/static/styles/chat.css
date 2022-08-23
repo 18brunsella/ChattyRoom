@@ -1,0 +1,93 @@
+body{
+  background-color: #282828;
+}
+
+h1{
+  font-family: 'Francois One';
+  text-align: center;
+  color: white;
+}
+
+input[type="text"] {
+  padding: 15px 20px;
+  border-radius: 40px;
+  border: solid black 2px;
+  margin: 40px 0;
+  width: 73%;
+  background-color: #d9d9d9;
+  font-family: 'Francois One';
+  font-size: 0.9em;
+}
+
+button {
+  font-family: 'Francois One';
+  color: white;
+  background-color: #414141;
+  border-radius: 15px;
+  font-size: 1.15em;
+  border: none;
+  padding: 12.5px 35px;
+  margin: 0 7px;
+}
+
+button:hover {
+  color: #414141;
+  background-color: white;
+  cursor: pointer;
+}
+
+svg {
+  fill: #d9d9d9;
+  margin: 6px; 
+  vertical-align: middle;
+}
+
+img {
+  margin: 6px; 
+  vertical-align: middle;
+}
+
+#chatInteraction {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-left: 6%;
+  display: inline-block;
+  word-wrap: break-word;
+}
+
+#messages {
+  padding: 0;
+  margin: 24px auto 0 auto;
+  list-style: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 85%;
+  height: 500px;
+}
+
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+  font-family: 'Francois One';
+  background-color: #d9d9d9;
+  border-radius: 10px;
+}
+
+.messengerName {
+  font-family: 'Inter';
+  color: #d9d9d9;
+  font-size: 0.95em;
+}
+
+.messageRight {
+  position: relative;
+  clear: both;
+  float: right;
+}
+
+.messageLeft {
+  position: relative;
+  clear: both;
+  float: left;
+}
