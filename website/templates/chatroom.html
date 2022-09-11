@@ -12,7 +12,7 @@ Main Chat Room
 
   // On connection to the server
   socket.on('connect', () => {
-    socket.emit("message", {data: "User connected!"});
+    socket.emit("message", {message: "User connected!"});
 
     // When the user submits form 
     // Send message to the server 
@@ -20,7 +20,8 @@ Main Chat Room
       e.preventDefault();
       const message = $('input.chatText').val();
       const name = "{{name}}";
-      socket.emit("message", {message:message,name:name});
+      const user_id = "{{id}}";
+      socket.emit("message", {message:message,name:name,id:user_id});
       $('input.chatText').val('').focus();
     })
   });
@@ -36,6 +37,8 @@ Main Chat Room
     }
   })
 </script>
+
+<a href="{{ url_for('exitRoom', user_id = id) }}" id="exitRoom">Exit Room</a>
 
 <h1>Welcome {{ name }} to the Main Chat Room</h1>
 

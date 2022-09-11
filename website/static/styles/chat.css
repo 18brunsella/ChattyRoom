@@ -91,3 +91,15 @@ img {
   clear: both;
   float: left;
 }
+
+#exitRoom {
+  display: inline-block;
+  text-decoration: none;
+  font-family: 'Francois One';
+  color: white;
+  margin: 0.5%;
+}
+
+#exitRoom:visited {
+  color: white;
+}
