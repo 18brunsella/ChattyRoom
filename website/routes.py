@@ -27,9 +27,6 @@ def room():
   # If the request is a POST method
   if request.method == "POST":
     username = request.form.get("username")
-    # Deleting a user 
-    #db.session.query(User).delete()
-    # db.session.commit()
 
     # Get all the users with the same name (it is not allowed)
     user_exists = User.query.filter_by(user_name=username).first()
